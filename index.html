@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<!-- <script src="static/hm.js"></script><script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> -->
+
+	<meta charset="UTF-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>咸鱼之王宝箱计算器</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			list-style: none
+		}
+
+		body {
+
+			background-color: #e8faff;
+            /* background-color: #c9e1ff; */
+		}
+
+		.flex {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center
+		}
+
+		.adv {
+			width: 80%;
+			max-width: 380px;
+			flex-direction: row;
+			justify-content: space-between;
+			margin: 10px
+		}
+
+		.title {
+			color: #003314;
+			font-size: 25px
+		}
+
+		h1.flex {
+			height: 110px;
+			justify-content: space-around;
+			font-size: 16px;
+			color: #00a542;
+			text-align: center
+		}
+
+		#gzh {
+			border-bottom: 2px solid#008a37;
+			cursor: pointer
+		}
+
+		.container {
+			width: 100%;
+			max-width: 420px;
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 20px
+		}
+
+		.box {
+			width: 110px;
+			height: 114px;
+			box-shadow: #08ab4a 0 0 4px;
+			border-radius: 5%;
+			text-align: center
+		}
+
+		.count {
+			margin-top: -6px
+		}
+
+		input,
+		button {
+			width: 80px;
+			height: 25px;
+			/* outline-color: #50CCFD; */
+			outline-color: #5cc18c;
+			border-color: #1f1f1f;
+			border-radius: 6px;
+			margin-top: 2px;
+			padding-top: 2px;
+			box-sizing: border-box;
+			text-align: center;
+			font-size: 16px;
+			cursor: pointer
+		}
+
+		button {
+			height: 25px;
+			padding: 0;
+			font-size: 12px;
+			/* background: #419ff7; */
+			background: #09c161;
+			color: white;
+			border: none
+		}
+
+		button:hover {
+			/* background-color: #63b4ff; */
+			background-color: #3ac67d;
+		}
+
+		#result {
+			width: 330px;
+			margin-top: 20px;
+			line-height: 32px;
+			background-color: #0a4321;
+			padding: 20px;
+			border-radius: 10px;
+			font-size: 18px
+		}
+
+		#result div {
+			width: 100%;
+			margin: 0;
+			text-align: center
+		}
+
+		#result span {
+			display: inline-block;
+			width: 70%;
+			color: white
+		}
+
+		#result b {
+			display: inline-block;
+			width: 25%;
+			/* color: rgb(255, 99, 99) */
+			color: rgb(232 250 255)
+		}
+
+		#specific {
+			margin: 10px 0 0 0;
+			transform: scale(1.2);
+			color: rgb(56, 56, 56);
+			font-weight: bold
+		}
+
+		textarea {
+			height: 0;
+			opacity: 0
+		}
+
+		#toast {
+			max-width: 400px;
+			min-width: 300px;
+			padding: 0 14px;
+			color: rgb(255, 255, 255);
+			line-height: 40px;
+			text-align: center;
+			border-radius: 4px;
+			position: fixed;
+			top: 30%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 999999;
+			background: rgba(0, 0, 0, .7);
+			font-size: 16px
+		}
+
+		#specificClac {
+			width: 350px;
+			border-radius: 10px;
+			background-color: white;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow: rgb(134, 134, 134)0 0 10px;
+			padding: 30px;
+			box-sizing: border-box;
+			display: none
+		}
+
+		#specificClac div {
+			display: flex;
+			justify-content: space-around;
+			margin: 10px 0
+		}
+
+		.kind div {
+			background-position: filter: grayscale(100%);
+			center center;
+			background-size: 60%;
+			background-repeat: no-repeat;
+			width: 70px;
+			height: 50px;
+			border-radius: 5px;
+			border: 3px solid#008a37
+		}
+
+		#confirm {
+			display: block;
+			margin: 20px auto 0;
+			width: 140px;
+			font-size: 20px;
+			padding: 4px
+		}
+	</style>
+	<style data-id="immersive-translate-input-injected-css">
+		.immersive-translate-input {
+			position: absolute;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			z-index: 2147483647;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.immersive-translate-input-loading {
+			--loading-color: #f78fb6;
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			display: block;
+			margin: 12px auto;
+			position: relative;
+			color: white;
+			left: -100px;
+			box-sizing: border-box;
+			animation: immersiveTranslateShadowRolling 1.5s linear infinite;
+		}
+
+		@keyframes immersiveTranslateShadowRolling {
+			0% {
+				box-shadow: 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+			}
+
+			12% {
+				box-shadow: 100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+			}
+
+			25% {
+				box-shadow: 110px 0 var(--loading-color), 100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+			}
+
+			36% {
+				box-shadow: 120px 0 var(--loading-color), 110px 0 var(--loading-color), 100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0);
+			}
+
+			50% {
+				box-shadow: 130px 0 var(--loading-color), 120px 0 var(--loading-color), 110px 0 var(--loading-color), 100px 0 var(--loading-color);
+			}
+
+			62% {
+				box-shadow: 200px 0 rgba(255, 255, 255, 0), 130px 0 var(--loading-color), 120px 0 var(--loading-color), 110px 0 var(--loading-color);
+			}
+
+			75% {
+				box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 130px 0 var(--loading-color), 120px 0 var(--loading-color);
+			}
+
+			87% {
+				box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 130px 0 var(--loading-color);
+			}
+
+			100% {
+				box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0);
+			}
+		}
+
+
+		.immersive-translate-search-recomend {
+			border: 1px solid #dadce0;
+			border-radius: 8px;
+			padding: 16px;
+			margin-bottom: 16px;
+			position: relative;
+			font-size: 16px;
+		}
+
+		.immersive-translate-search-enhancement-en-title {
+			color: #4d5156;
+		}
+
+		/* dark */
+		@media (prefers-color-scheme: dark) {
+			.immersive-translate-search-recomend {
+				border: 1px solid #3c4043;
+			}
+
+			.immersive-translate-close-action svg {
+				fill: #bdc1c6;
+			}
+
+			.immersive-translate-search-enhancement-en-title {
+				color: #bdc1c6;
+			}
+		}
+
+
+		.immersive-translate-search-settings {
+			position: absolute;
+			top: 16px;
+			right: 16px;
+			cursor: pointer;
+		}
+
+		.immersive-translate-search-recomend::before {
+			/* content: " "; */
+			/* width: 20px; */
+			/* height: 20px; */
+			/* top: 16px; */
+			/* position: absolute; */
+			/* background: center / contain url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAxlBMVEUAAADpTInqTIjpSofnSIfqS4nfS4XqS4nqTIjsTYnrTInqTIroS4jvQIDqTIn////+/v7rSYjpTIn8/v7uaZzrTIr9/f3wfansWJL88/b85e73qc39+/v3xNnylrvrVI/98fb62Obva5/8+fr76vH4y9zpSIj74e353Oj1ocTzm77xhK/veKbtYpjsXJTqU47oTInxjrXyh7L99fj40eH2ttH1udD3sc31ssz1rMnykLXucqPtbqD85e/1xdn2u9DzqcXrUY6FaJb8AAAADnRSTlMA34BgIM8Q37/fz7+/EGOHcVQAAAGhSURBVDjLhZPncuowEEZFTW7bXVU7xsYYTO/p7bb3f6lICIOYJOT4h7/VnFmvrBFjrF3/CR/SajBHswafctG0Qg3O8O0Xa8BZ6uw7eLjqr30SofCDVSkemMinfL1ecy20r5ygR5zz3ArcAqJExPTPKhDENEmS30Q9+yo4lEQkqVTiIEAHCT10xWERRdH0Bq0aCOPZNDV3s0xaYce1lHEoDHU8wEh3qRJypNcTAeKUIjgKMeGLDoRCLVLTVf+Ownj8Kk6H9HM6QXPgYjQSB0F00EJEu10ILQrs/QeP77BSSr0MzLOyuJJQbnUoOOIUI/A8EeJk9E4YUHUWiRyTVKGgQUB8/3e/NpdGlfI+FMQyWsCBWyz4A/ZyHXyiiz0Ne5aGZssoxRmcChw8/EFKQ5JwwkUo3FRT5yXS7q+Y/rHDZmFktzpGMvO+5QofA4FPpEmGw+EWRCFvnaof7Zhe8NuYSLR0xErKLThUSs8gnODh87ssy6438yzbLzxl012HS19vfCf3CNhnbWOL1eEsDda+gDPUvri8tSZzNFrwIZf1NmNvqC1I/t8j7nYAAAAASUVORK5CYII='); */
+		}
+
+		.immersive-translate-search-title {}
+
+		.immersive-translate-search-title-wrapper {}
+
+		.immersive-translate-search-time {
+			font-size: 12px;
+			margin: 4px 0 24px;
+			color: #70757a;
+		}
+
+		.immersive-translate-expand-items {
+			display: none;
+		}
+
+		.immersive-translate-search-more {
+			margin-top: 16px;
+			font-size: 14px;
+		}
+
+		.immersive-translate-modal {
+			display: none;
+			position: fixed;
+			z-index: 1000000;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgb(0, 0, 0);
+			background-color: rgba(0, 0, 0, 0.4);
+			font-size: 15px;
+		}
+
+		.immersive-translate-modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			border-radius: 10px;
+			width: 80%;
+			max-width: 500px;
+			font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu",
+				"Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+				"Segoe UI Symbol", "Noto Color Emoji";
+		}
+
+		.immersive-translate-modal-title {
+			font-size: 1.3rem;
+			font-weight: 500;
+			margin-bottom: 20px;
+			color: hsl(205, 20%, 32%);
+		}
+
+		.immersive-translate-modal-body {
+			color: hsl(205, 20%, 32%)
+		}
+
+		.immersive-translate-close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.immersive-translate-close:hover,
+		.immersive-translate-close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		.immersive-translate-modal-footer {
+			display: flex;
+			justify-content: flex-end;
+			flex-wrap: wrap;
+			margin-top: 20px;
+		}
+
+		.immersive-translate-btn {
+			width: fit-content;
+			color: #fff;
+			background-color: #ea4c89;
+			border: none;
+			font-size: 14px;
+			margin: 5px;
+			padding: 10px 20px;
+			font-size: 1rem;
+			border-radius: 5px;
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		.immersive-translate-cancel-btn {
+			/* gray color */
+			background-color: rgb(89, 107, 120);
+		}
+
+		.immersive-translate-btn:hover {
+			background-color: #f082ac;
+		}
+
+		.immersive-translate-cancel-btn:hover {
+			background-color: hsl(205, 20%, 32%);
+		}
+
+
+		.immersive-translate-btn svg {
+			margin-right: 5px;
+		}
+
+		.immersive-translate-link {
+			cursor: pointer;
+			user-select: none;
+			-webkit-user-drag: none;
+			text-decoration: none;
+			color: #007bff;
+			-webkit-tap-highlight-color: rgba(0, 0, 0, .1);
+		}
+
+		.immersive-translate-primary-link {
+			cursor: pointer;
+			user-select: none;
+			-webkit-user-drag: none;
+			text-decoration: none;
+			color: #ea4c89;
+			-webkit-tap-highlight-color: rgba(0, 0, 0, .1);
+		}
+
+		.immersive-translate-modal input[type="radio"] {
+			margin: 0 6px;
+			cursor: pointer;
+		}
+
+		.immersive-translate-modal label {
+			cursor: pointer;
+		}
+
+		.immersive-translate-close-action {
+			position: absolute;
+			top: 2px;
+			right: 0px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body class="flex" onmouseover="startVideo()">
+	<div class="adv flex">
+		<h1 class="flex" style="width: 100%;">
+			<p class="title">咸鱼之王宝箱</p>
+			<p class="title">积分计算器</p>
+			<p id="">宝箱底部输入框填宝箱数量</p>
+			<p id="">点计算即可算当前能开几轮</p>
+			<p id="">满3400积分能完成一轮</p>
+			<!-- <p id="gzh">满3400积分能完成一轮</p> -->
+		</h1>
+		<!-- <a href="https://mp.weixin.qq.com/s?__biz=Mzk0MTU3Mjc3MQ==&mid=2247483843&idx=1&sn=9ab620966ac2c47fcde6a94f68b7769e&chksm=c2d1160ff5a69f19259b1e96e77fe4a641fac6a2479add765a7fadc5facedd1c45babe391c02&token=1411740596&lang=zh_CN#rd">
+			<img src="static/%E6%94%BB%E7%95%A5.jpg" width="120px">
+		</a> -->
+	</div>
+	<div class="container  flex">
+		<div class="box"><img src="static/VlgtXUhyjPzToqZ.png">
+			<p class="count"><input type="text" id="wooden" value="0"></p>
+		</div>
+		<div class="box"><img src="static/Io6V3tXhWc2LeOi.png">
+			<p class="count"><input type="text" id="bronze" value="0"></p>
+		</div>
+		<div class="box"><img src="static/AOLC2VuQhKfEqJF.png">
+			<p class="count"><input type="text" id="accomplished" value="0"></p>
+		</div>
+		<div class="box"><img src="static/YvQbPJynTkuGxEM.png">
+			<p class="count"><input type="text" id="gold" value="0"></p>
+		</div>
+		<div class="box"><img src="static/E14hKXjv7qNYDCm.png">
+			<p class="count"><input type="text" id="platinum" value="0"></p>
+		</div>
+		<div class="box"><img src="static/ZJUxpmFgsYq7Ei6.png">
+			<p class="count"><button id="market">设置黑市</button></p>
+		</div>
+	</div>
+	<div id="result">
+		<div><span>可完成「宝箱达标」轮数 ： </span><b>0</b></div>
+		<div><span>当前总积分 ： </span><b>0</b></div>
+		<div><span>完成下一轮还需 ： </span><b>3440</b></div>
+		<div><span>本周黑市还可获得 ： </span><b>0</b></div>
+		<div><span>本周扣除黑市外还需 ： </span><b>3440</b></div>
+		<div><span>需要闯关 ： </span><b>1376</b></div>
+	</div><textarea id="textarea">咸鱼激活码</textarea>
+	<div id="toast"></div>
+	<div id="specificClac">
+		<h5>1、每日黑市购买宝箱的种类</h5>
+		<div class="kind">
+			<div style="background-image: url(static/VlgtXUhyjPzToqZ.png);"></div>
+			<div style="background-image: url(static/Io6V3tXhWc2LeOi.png);"></div>
+			<div style="background-image: url(static/YvQbPJynTkuGxEM.png);"></div>
+		</div>
+		<h5>2、每日黑市购买次数</h5>
+		<div><button id="minus">-1</button><input type="text" id="count" value="3"><button id="plus">+1</button>
+		</div>
+		<!-- <h5>#第一次使用需前往黑市购买计算器设置一次购买宝箱</h5>
+			<h5>#仅需设置一次，结果将保存至浏览器中</h5>
+			<h5>#前往<a href="https://jsq.czymfzs.cn/index.html" style="color: #61362D;">黑市购买计算器</a></h5> -->
+
+		<button id="confirm" style="height: 40px;">确定</button>
+	</div>
+
+	<button id="confirm" style="height: 40px;">计算</button>
+	<script src="static/index1.js">
+
+	</script>
+
+	<div class="ad-container">
+		<div class="ad-left">
+			<img class="ad-img" src="static/xxbx.png" alt="">
+			<p class="ad-p">咸咸计算器<br /> 宝箱积分精准计算<br/> <a href="https://mp.weixin.qq.com/s?__biz=Mzk0MTU3Mjc3MQ==&mid=2247483843&idx=1&sn=9ab620966ac2c47fcde6a94f68b7769e&chksm=c2d1160ff5a69f19259b1e96e77fe4a641fac6a2479add765a7fadc5facedd1c45babe391c02&token=1411740596&lang=zh_CN#rd">点击查看更多</a> </p>
+			<!-- <video class="ad-video" src="static/0bc3e4aewaaazmap5skuc5svaj6djmtqasya.f10002.mp4" controls></video> -->
+			<!-- <video id="myVideo" class="ad-video" width="640" height="360" controls autoplay loop>
+				<source src="static/0bc3e4aewaaazmap5skuc5svaj6djmtqasya.f10002.mp4" type="video/mp4">
+				Your browser does not support the video tag.
+			</video> -->
+		</div>
+		<div class="ad-right">
+			<img class="ad-img" src="static/xxzs.png" alt="">
+			<p class="ad-p">咸咸助手<br /> 消耗活动模拟器</p>
+			<p class="ad-p">助力拿下金鱼</p>
+		</div>
+	</div>
+
+</body>
+<div id="immersive-translate-popup" style="all: initial"></div>
+
+</html>
+
+<script>
+    function startVideo() {
+        // var video = document.getElementById("myVideo");
+        // video.play();
+    }
+</script>
+
+<style>
+
+	.box {
+		cursor: pointer;
+	}
+	
+	.kind div {
+		cursor: pointer;
+		background-position: center;
+	}
+
+	.ad-left, .ad-right {
+		text-align: center;
+	}
+
+	.ad-left {
+		position: fixed;
+		left: 0;
+		top: 20vh;
+		width: 200px;
+		height: 200px;
+		/* background-color: #f082ac; */
+		/* text-align: left; */
+	}
+
+	.ad-right {
+		position: fixed;
+		right: 0;
+		top: 20vh;
+		width: 200px;
+		height: 200px;
+		/* background-color: #f082ac; */
+		/* text-align: right; */
+	}
+
+	.ad-img {
+		width: 120px;
+		height: 120px;
+	}
+
+	.ad-video {
+		width: 200px;
+		padding: 2px 0;
+	}
+
+	.ad-p {
+		text-align: center;
+		font-size: 14px;
+		font-weight: 900;
+		color: #09c161;
+		width: 120px;
+		display: inline-block;
+	}
+
+	@media screen and (max-width: 700px) {
+		body {
+			/* background: #000; */
+		}
+
+		.ad-container {
+			display: flex;
+		}
+
+		.ad-left,
+		.ad-right {
+			position: inherit;
+			display: inline-block;
+			flex: 1;
+			width: auto;
+			padding: 10px;
+		}
+
+		.ad-p {
+			text-align: center;
+			font-size: 14px;
+			font-weight: 900;
+			display: block;
+		}
+
+	}
+</style>
